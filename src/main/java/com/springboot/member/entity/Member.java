@@ -39,8 +39,12 @@ public class Member {
     @Column(nullable = false, name = "LAST_MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private List<Order> orders = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stamp_id")
+    private Stamp stamp;
 
     public Member(String email) {
         this.email = email;
@@ -52,8 +56,15 @@ public class Member {
         this.phone = phone;
     }
 
-    public void addOrder(Order order) {
+    public void setOrders(Order order) {
+        if(order.getMember() != this){
+            order.setMember(this);
+        }
         orders.add(order);
+        this.stamp.setStampCount(
+                order.getOrderCoffees().stream().mapToInt(orderCoffee -> orderCoffee.getQuantity()).sum()
+        );
+//        stamp.setStamp(this.stamp)
     }
 
     // 추가 된 부분

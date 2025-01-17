@@ -1,5 +1,6 @@
 package com.springboot.coffee.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 public class Coffee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
